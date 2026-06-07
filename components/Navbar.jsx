@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <header>
+    <header suppressHydrationWarning>
       <div className="container nav-container glass">
         <Link href="/" className="logo">
           InAmigos<span>.</span>

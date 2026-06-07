@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
 
 export default function Impact() {
   const growthChartRef = useRef(null);
@@ -11,78 +10,80 @@ export default function Impact() {
     let growthChartInstance = null;
     let distributionChartInstance = null;
 
-    const primaryColor = '#0F4C81';
-    const secondaryColor = '#F39C12';
-    const accentColor = '#27AE60';
-    const textColor = '#2C3E50';
+    import('chart.js/auto').then(({ default: Chart }) => {
+      const primaryColor = '#0F4C81';
+      const secondaryColor = '#F39C12';
+      const accentColor = '#27AE60';
+      const textColor = '#2C3E50';
 
-    if (growthChartRef.current) {
-      const ctxGrowth = growthChartRef.current.getContext('2d');
-      growthChartInstance = new Chart(ctxGrowth, {
-        type: 'line',
-        data: {
-          labels: ['2020', '2021', '2022', '2023', '2024'],
-          datasets: [{
-            label: 'Lives Impacted (Thousands)',
-            data: [2, 10, 25, 40, 50],
-            borderColor: primaryColor,
-            backgroundColor: 'rgba(15, 76, 129, 0.2)',
-            borderWidth: 3,
-            tension: 0.4,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Yearly Impact Growth',
-              color: textColor,
-              font: { size: 18, family: 'Outfit' }
-            },
-            legend: { labels: { color: textColor } }
+      if (growthChartRef.current) {
+        const ctxGrowth = growthChartRef.current.getContext('2d');
+        growthChartInstance = new Chart(ctxGrowth, {
+          type: 'line',
+          data: {
+            labels: ['2020', '2021', '2022', '2023', '2024'],
+            datasets: [{
+              label: 'Lives Impacted (Thousands)',
+              data: [2, 10, 25, 40, 50],
+              borderColor: primaryColor,
+              backgroundColor: 'rgba(15, 76, 129, 0.2)',
+              borderWidth: 3,
+              tension: 0.4,
+              fill: true
+            }]
           },
-          scales: {
-            x: { ticks: { color: textColor }, grid: { color: 'rgba(0,0,0,0.05)' } },
-            y: { ticks: { color: textColor }, grid: { color: 'rgba(0,0,0,0.05)' } }
-          }
-        }
-      });
-    }
-
-    if (distributionChartRef.current) {
-      const ctxDist = distributionChartRef.current.getContext('2d');
-      distributionChartInstance = new Chart(ctxDist, {
-        type: 'doughnut',
-        data: {
-          labels: ['Education', 'Environment', 'Animal Welfare', 'Community Support'],
-          datasets: [{
-            data: [35, 25, 20, 20],
-            backgroundColor: [primaryColor, accentColor, '#E84393', secondaryColor],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Resource Distribution',
-              color: textColor,
-              font: { size: 18, family: 'Outfit' }
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Yearly Impact Growth',
+                color: textColor,
+                font: { size: 18, family: 'Outfit' }
+              },
+              legend: { labels: { color: textColor } }
             },
-            legend: { 
-              position: 'bottom',
-              labels: { color: textColor, padding: 20 }
+            scales: {
+              x: { ticks: { color: textColor }, grid: { color: 'rgba(0,0,0,0.05)' } },
+              y: { ticks: { color: textColor }, grid: { color: 'rgba(0,0,0,0.05)' } }
             }
+          }
+        });
+      }
+
+      if (distributionChartRef.current) {
+        const ctxDist = distributionChartRef.current.getContext('2d');
+        distributionChartInstance = new Chart(ctxDist, {
+          type: 'doughnut',
+          data: {
+            labels: ['Education', 'Environment', 'Animal Welfare', 'Community Support'],
+            datasets: [{
+              data: [35, 25, 20, 20],
+              backgroundColor: [primaryColor, accentColor, '#E84393', secondaryColor],
+              borderWidth: 0
+            }]
           },
-          cutout: '70%'
-        }
-      });
-    }
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Resource Distribution',
+                color: textColor,
+                font: { size: 18, family: 'Outfit' }
+              },
+              legend: { 
+                position: 'bottom',
+                labels: { color: textColor, padding: 20 }
+              }
+            },
+            cutout: '70%'
+          }
+        });
+      }
+    });
 
     return () => {
       if (growthChartInstance) growthChartInstance.destroy();
